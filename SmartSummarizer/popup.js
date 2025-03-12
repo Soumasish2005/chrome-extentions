@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (response) => {
               if (response?.summary) {
                 // Convert Markdown to HTML using Marked.js
-                summaryContainer.innerHTML = marked.parse(response.summary);
+                renderMarkdown(response.summary);
               } else {
                 summaryContainer.textContent = "No summary available.";
               }
@@ -40,4 +40,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function getSelectedText() {
   return window.getSelection().toString();
+}
+
+function renderMarkdown(mdText) {
+  try {
+    let html = marked.parse(mdText, {
+      breaks: true,
+      gfm: true,
+    });
+
+    document.getElementById("summary").innerHTML = html;
+  } catch (error) {
+    console.error("Markdown parsing error:", error);
+    document.getElementById("summary").innerHTML = `
+      <p style="color: red;">Error rendering summary.</p>
+      <pre>${mdText}</pre>
+    `;
+  }
 }
