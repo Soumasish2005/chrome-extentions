@@ -1,6 +1,5 @@
 # SmartSummarizer
 
-## Overview
 SmartSummarizer is a Chrome extension that helps users summarize long articles and highlight key points on webpages. It uses the Google Generative Language API to generate summaries in Markdown format and highlights the most important sentences directly on the webpage.
 
 ## Features
