@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (response) => {
               if (response?.summary) {
                 // Convert Markdown to HTML using Marked.js
-                summaryContainer.innerHTML = (response.summary);
+                summaryContainer.innerHTML = marked.parse(response.summary);
               } else {
                 summaryContainer.textContent = "No summary available.";
               }
