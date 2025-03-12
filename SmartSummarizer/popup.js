@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const summarizeButton = document.getElementById("summarizeButton");
+  const summarizeButton = document.getElementById("summarizeBtn");
   const summaryContainer = document.getElementById("summary");
+
+  if (!summarizeButton || !summaryContainer) {
+    console.error("Popup elements not found!");
+    return;
+  }
 
   summarizeButton.addEventListener("click", () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -10,17 +15,23 @@ document.addEventListener("DOMContentLoaded", () => {
           func: getSelectedText,
         },
         (selection) => {
-          const content = selection[0].result;
-          if (content) {
-            chrome.runtime.sendMessage(
-              { action: "summarize", content: content },
-              (response) => {
-                summaryContainer.textContent = response.summary;
-              }
-            );
-          } else {
+          if (!selection || selection.length === 0 || !selection[0].result) {
             summaryContainer.textContent = "Please select text to summarize.";
+            return;
           }
+
+          const content = selection[0].result;
+          chrome.runtime.sendMessage(
+            { action: "summarize", content: content },
+            (response) => {
+              if (response?.summary) {
+                // Convert Markdown to HTML using Marked.js
+                summaryContainer.innerHTML = (response.summary);
+              } else {
+                summaryContainer.textContent = "No summary available.";
+              }
+            }
+          );
         }
       );
     });
