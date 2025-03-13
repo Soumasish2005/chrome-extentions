@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 async function fetchSummary(content, sendResponse) {
-  const apiKey = 'AIzaSyAzPdoHCoRtQbKYfuxHDDIS6wsBdhgy_yM'; 
+  const apiKey = 'YOUR_API_KEY';  // Insert your gemini api key here
   const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
   try {
